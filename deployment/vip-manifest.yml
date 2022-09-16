@@ -27,7 +27,7 @@ instance_groups:
   stemcell: "default"
   networks:
   - name: "default"
-  - name: "public"
+  - name: "vip"
     default:
     - dns
     - gateway
