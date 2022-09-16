@@ -1,0 +1,42 @@
+---
+name: vip-spring-music
+
+stemcells:
+- alias: default
+  os: "ubuntu-bionic"
+  version: "latest"
+
+releases:
+- name: "spring-music"                         # 서비스 릴리즈 이름(필수) bosh releases로 확인 가능
+  url: file://../spring-music-release-1.0.0.tgz
+  version: "1.0.0"                                            # 서비스 릴리즈 버전(필수):latest 시 업로드된 서비스 릴리즈 최신버전
+
+update:
+  canaries: 1                                               # canary 인스턴스 수(필수)
+  canary_watch_time: 5000-120000                            # canary 인스턴스가 수행하기 위한 대기 시간(필수)
+  update_watch_time: 5000-120000                            # non-canary 인스턴스가 수행하기 위한 대기 시간(필수)
+  max_in_flight: 1                                          # non-canary 인스턴스가 병렬로 update 하는 최대 개수(필수)
+  serial: false
+
+instance_groups:
+
+- name: vip-spring-music
+  azs: [z7]
+  instances: 1
+  vm_type: "minimal"
+  stemcell: "default"
+  networks:
+  - name: "default"
+  - name: "public"
+    default:
+    - dns
+    - gateway
+    static_ips:
+    - 61.252.53.234
+  jobs:
+  - name: spring-music
+    release: "spring-music"
+  properties:
+    java_opts: "-Xmx900m -Xss1M -XX:MaxMetaspaceSize=93382K -XX:ReservedCodeCacheSize=240m -XX:+UseCompressedOops -Djdk.tls.ephemeralDHKeySize=2048 -Dfile.encoding=UTF-8 -XX:+UseConcMarkSweepGC -XX:SoftRefLRUPolicyMSPerMB=50 -Dsun.io.useCanonCaches=false -Djava.net.preferIPv4Stack=true -XX:+HeapDumpOnOutOfMemoryError -XX:-OmitStackTraceInFastThrow -Xverify:none -XX:ErrorFile=/var/vcap/sys/log/java_error_in_idea_%p.log -XX:HeapDumpPath=/var/vcap/sys/log/java_error_in_idea.hprof"
+
+

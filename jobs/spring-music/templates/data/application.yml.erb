@@ -1,0 +1,14 @@
+# Spring properties
+spring:
+  application:
+    name: springmusic  # Service registers under this name
+  security:
+    username: admin
+    password: openpaasta
+  flyway:
+    enabled: false
+
+server:
+  port: <%= p('server.port')%>
+
+

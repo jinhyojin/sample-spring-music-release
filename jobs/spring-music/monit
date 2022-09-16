@@ -1,0 +1,5 @@
+check process spring-music
+  with pidfile /var/vcap/sys/run/spring-music/spring-music.pid
+  start program "/var/vcap/jobs/spring-music/bin/monit_debugger service_ctl '/var/vcap/jobs/spring-music/bin/service_ctl start'"
+  stop program "/var/vcap/jobs/spring-music/bin/monit_debugger service_ctl '/var/vcap/jobs/spring-music/bin/service_ctl stop'"
+  group vcap
